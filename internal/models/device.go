@@ -1,8 +1,9 @@
 package models
 
 type Device struct {
-	Name      string
-	IpAddress string
-	Type      string
-	Connected bool
+	Name       string
+	IpAddress  string
+	MacAddress string
+	Type       string
+	Connected  bool
 }

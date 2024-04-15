@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"net"
 )
 
@@ -17,7 +16,7 @@ func NewNetwork() *Network {
 	return &Network{}
 }
 
-func (n *Network) Init() error {
+func (n *Network) Init(name string) error {
 	localAddresses, err := net.InterfaceAddrs()
 	if err != nil {
 		return errors.New("unable to get local interface addresses")
@@ -30,10 +29,10 @@ func (n *Network) Init() error {
 				n.IP = ip.IP.Mask(ip.IP.DefaultMask())
 				mask, _ := ip.IP.DefaultMask().Size()
 				n.CIDR = mask
-				fmt.Println("Name > ", addr.Network())
 			}
 		}
 	}
+	n.Name = name
 
 	return nil
 }

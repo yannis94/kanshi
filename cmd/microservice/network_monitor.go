@@ -12,7 +12,5 @@ func main() {
 	fmt.Println("Network monioring")
 	nms := store.NewNetworkMemoryStore()
 
-	m := network.NewMonitor(nms, "home")
-
-	fmt.Printf("%+v\n", m)
+	network.NewMonitor(nms, "home")
 }

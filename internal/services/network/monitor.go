@@ -26,19 +26,17 @@ func NewMonitor(s store.NetworkStorage, networkName string) *Monitor {
 
 	if network != nil {
 		monitor.Network = *network
-		return monitor
+	} else {
+		err = monitor.Network.Init(networkName)
+		if err != nil {
+			panic(err)
+		}
+		err = s.Add(&monitor.Network)
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	err = monitor.Network.Init(networkName)
-	if err != nil {
-		panic(err)
-	}
-
-	err = s.Add(&monitor.Network)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%+v\n", monitor.Network)
 	devices, err := monitor.scanner.ScanNetwork(monitor.Network.IP)
 
 	if err != nil {

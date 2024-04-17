@@ -2,6 +2,7 @@ package network
 
 import (
 	"fmt"
+	"net"
 
 	"github.com/yannis94/kanshi/internal/models"
 	"github.com/yannis94/kanshi/internal/store"
@@ -46,6 +47,9 @@ func NewMonitor(s store.NetworkStorage, networkName string) *Monitor {
 	fmt.Println("Devices found:")
 	for _, device := range devices {
 		fmt.Printf("device found: %+v\n", device)
+		deviceIP := net.ParseIP(device.IpAddress)
+		err := monitor.scanner.ScanDevice(deviceIP)
+		fmt.Println(err)
 	}
 	return monitor
 }

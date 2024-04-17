@@ -51,5 +51,6 @@ func (s *Scanner) ScanNetwork(ip net.IP) ([]*models.Device, error) {
 	return devices, nil
 }
 
-func (s *Scanner) ScanDevice() {
+func (s *Scanner) ScanDevice(ip net.IP) error {
+	return pingICMP(ip)
 }

@@ -13,4 +13,5 @@ func main() {
 	nms := store.NewNetworkMemoryStore()
 
 	network.NewMonitor(nms, "home")
+	fmt.Println("Memory storage")
 }

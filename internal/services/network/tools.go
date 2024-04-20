@@ -3,6 +3,7 @@ package network
 import (
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -51,7 +52,11 @@ func pingICMP(addr net.IP) error {
 
 	reply := make([]byte, 1500)
 	_, _, err = conn.ReadFrom(reply)
-	fmt.Printf("reply: > %+v\n", reply)
+	if err != nil {
+		return fmt.Errorf("Unable to read reply: %w", err)
+	}
+	pingReply, err := icmp.ParseMessage(1, reply)
+	fmt.Printf("reply: > %+v\n", pingReply)
 
 	if err != nil {
 		return fmt.Errorf("Unable to read reply: %w", err)
@@ -76,4 +81,17 @@ func pingTCP(addr net.IP) error {
 	}
 	conn.Close()
 	return nil
+}
+
+func httpGetRequest(url string) (*http.Response, error) {
+	client := http.Client{
+		Timeout: time.Second * 25,
+	}
+
+	resp, err := client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }

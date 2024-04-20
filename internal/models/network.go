@@ -6,10 +6,10 @@ import (
 )
 
 type Network struct {
-	Name    string
-	IP      net.IP
-	Devices []Device
-	CIDR    int
+	Name    string   `json:"name"`
+	IP      net.IP   `json:"ip"`
+	Devices []Device `json:"devices"`
+	CIDR    int      `json:"cidr"`
 }
 
 func NewNetwork() *Network {

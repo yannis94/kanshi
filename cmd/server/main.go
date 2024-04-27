@@ -21,6 +21,7 @@ func main() {
 		return c.JSON(200, map[string]string{"message": "Hello friend"})
 	})
 	e.GET("/network", networkHandler.GetInfo)
+	e.GET("/bandwidth", networkHandler.GetBandwidth)
 
 	e.Logger.Fatal(e.Start(":3333"))
 }

@@ -21,7 +21,7 @@ func main() {
 		port                   int
 	)
 
-	flag.BoolVar(&GRPCServer, "grpc", false, "gRPC server address")
+	flag.BoolVar(&GRPCServer, "grpc", true, "gRPC server address")
 	flag.BoolVar(&RESTServer, "rest", false, "REST server address")
 	flag.IntVar(&port, "p", 3002, "Port to listen on")
 
@@ -42,6 +42,7 @@ func main() {
 		grpcServer := grpc.NewServer()
 		pb.RegisterNetworkServer(grpcServer, &kanshi_grpc.NetworkGRPCServer{Monitor: monitor})
 
+		fmt.Println("gRPC server starting on port", port)
 		if err := grpcServer.Serve(listen); err != nil {
 			log.Fatalf("Failed to serve: %v", err)
 		}

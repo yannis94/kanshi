@@ -5,7 +5,7 @@ import (
 
 	echo "github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/yannis94/kanshi/internal/handlers"
+	"github.com/yannis94/kanshi/internal/services/http/handlers"
 )
 
 func main() {

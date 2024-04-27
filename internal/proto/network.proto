@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "internal/proto/network_grpc";
+package network_grpc;
+
+service Network {
+    rpc GetBandwidth(GetBandwidthRequest) returns (GetBandwidthResponse) {}
+    rpc GetNetworkInfo(GetNetworkInfoRequest) returns (GetNetworkInfoResponse) {}
+}
+
+message GetBandwidthRequest {
+}
+
+message GetBandwidthResponse {
+    int32 bytesPerMilisecond=1;
+}
+
+message GetNetworkInfoRequest{
+}
+message GetNetworkInfoResponse {
+    bytes networkInfo=1;
+}

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/yannis94/kanshi/internal/models"
@@ -17,10 +18,10 @@ func NewNetworkHandler() *NetworkHandler {
 }
 
 func (h *NetworkHandler) GetInfo(c echo.Context) error {
-	conn, err := grpc.Dial("localhost:3002", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(":3002", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	if err != nil {
-		return c.JSON(500, map[string]string{"error": err.Error()})
+		return c.Render(http.StatusServiceUnavailable, "/views/error.html", map[string]interface{}{"code": http.StatusServiceUnavailable, "error": err.Error()})
 	}
 
 	defer conn.Close()
@@ -30,23 +31,23 @@ func (h *NetworkHandler) GetInfo(c echo.Context) error {
 	ntwInfo, err := client.GetNetworkInfo(c.Request().Context(), nil)
 
 	if err != nil {
-		return c.JSON(500, map[string]string{"error": err.Error()})
+		return c.Render(http.StatusServiceUnavailable, "/views/error.html", map[string]interface{}{"code": http.StatusServiceUnavailable, "error": err.Error()})
 	}
 
 	var data models.Network
 
 	if err := json.Unmarshal(ntwInfo.NetworkInfo, &data); err != nil {
-		return c.JSON(500, map[string]string{"error": err.Error()})
+		return c.Render(http.StatusInternalServerError, "/views/error.html", map[string]interface{}{"code": http.StatusInternalServerError, "error": err.Error()})
 	}
 
-	return c.JSON(200, data)
+	return c.Render(http.StatusOK, "/views/network.html", map[string]interface{}{"data": data})
 }
 
 func (h *NetworkHandler) GetBandwidth(c echo.Context) error {
 	conn, err := grpc.Dial("localhost:3002", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	if err != nil {
-		return c.JSON(500, map[string]string{"error": err.Error()})
+		return c.Render(http.StatusInternalServerError, "/views/error.html", map[string]interface{}{"code": http.StatusInternalServerError, "error": err.Error()})
 	}
 
 	defer conn.Close()
@@ -56,8 +57,8 @@ func (h *NetworkHandler) GetBandwidth(c echo.Context) error {
 	bandwidth, err := client.GetBandwidth(c.Request().Context(), nil)
 
 	if err != nil {
-		return c.JSON(500, map[string]string{"error": err.Error()})
+		return c.Render(http.StatusInternalServerError, "/views/error.html", map[string]interface{}{"code": http.StatusInternalServerError, "error": err.Error()})
 	}
 
-	return c.JSON(200, map[string]int32{"bandwidth": bandwidth.BytesPerMilisecond})
+	return c.Render(http.StatusOK, "/views/network.html", map[string]interface{}{"data": bandwidth.BytesPerMilisecond})
 }

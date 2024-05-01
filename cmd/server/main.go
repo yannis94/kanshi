@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"path/filepath"
 
 	echo "github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -14,11 +15,13 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Static("/assets", filepath.Join("cmd", "server", "www", "public"))
+	e.Renderer = handlers.NewHTMLTemplate(filepath.Join("cmd", "server", "www"))
 
 	networkHandler := handlers.NewNetworkHandler()
 
 	e.GET("/", func(c echo.Context) error {
-		return c.JSON(200, map[string]string{"message": "Hello friend"})
+		return c.Render(200, "/views/index.html", map[string]interface{}{})
 	})
 	e.GET("/network", networkHandler.GetInfo)
 	e.GET("/bandwidth", networkHandler.GetBandwidth)

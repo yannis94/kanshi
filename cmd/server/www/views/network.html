@@ -4,5 +4,5 @@
 {{ define "body" }}
     <h1>Network</h1>
     <h2>{{ index . "data" }}</h2>
-    <p>Sorry, the page you are looking for could not be found.</p>
+    <div hx-get="/hm/devices" hx-trigger="load" hx-swap="outerHTML"></div>
 {{ end }}

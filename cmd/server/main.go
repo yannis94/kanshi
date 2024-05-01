@@ -25,6 +25,7 @@ func main() {
 	})
 	e.GET("/network", networkHandler.GetInfo)
 	e.GET("/bandwidth", networkHandler.GetBandwidth)
+	e.GET("/hm/devices", networkHandler.GetDevices)
 
 	e.Logger.Fatal(e.Start(":3333"))
 }

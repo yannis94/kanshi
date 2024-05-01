@@ -1,0 +1,13 @@
+{{ define "card" }}
+{{ range .Devices }}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ .IP }}</h2>
+    </div>
+    <div class="card-body">
+        <p>IP address: {{ .IP }}</p>
+        <p>Connected: {{ .Connected }}</p>
+    </div>
+</div>
+{{ end }}
+{{ end }}

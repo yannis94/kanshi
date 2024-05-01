@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"html/template"
 	"io"
 	"path/filepath"
@@ -37,6 +38,7 @@ func NewHTMLTemplate(dirPath string) *HTMLTemplate {
 		}
 		templates[templatePath] = template.Must(template.ParseFiles(file, baseTempl))
 	}
+	fmt.Printf("%v\n", templates)
 
 	return &HTMLTemplate{templates: templates}
 }
